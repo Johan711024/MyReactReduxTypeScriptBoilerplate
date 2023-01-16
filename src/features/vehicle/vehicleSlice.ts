@@ -1,4 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState, AppThunk } from '../../app/store';
+
 import { fetchVehicle} from './vehicleAPI'
 
 
@@ -6,16 +8,21 @@ import { fetchVehicle} from './vehicleAPI'
 
 
 export interface VehicleState {
-    value: number;
+    vehicles: Array<
+        {
+            key: string,
+            value: string
+        }
+    >;
     status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: VehicleState = {
-    value: 0,
+    vehicles: [],
     status: 'idle'
 }
 
-export const getVehicles = createAsyncThunk(
+export const getAsyncVehicles = createAsyncThunk(
     'vehicle/fetchVehicle',
     async () => {
         const response = await fetchVehicle()
@@ -27,9 +34,9 @@ export const vehicleSlice = createSlice({
     name: 'vehicle',
     initialState,
     reducers: {
-        vehicleSuccess: (state) =>
+        vehicleSuccess: (state, action: PayloadAction<any>) =>
             {
-                
+                state.vehicles = action.payload
             }
         ,
         vehicleFailure: (state) =>
@@ -41,19 +48,22 @@ export const vehicleSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getVehicles.pending, (state) => {
+            .addCase(getAsyncVehicles.pending, (state) => {
                 state.status = 'loading'
             })
-            .addCase(getVehicles.fulfilled, (state,action) => {
+            .addCase(getAsyncVehicles.fulfilled, (state,action: PayloadAction<any>) => {
                 state.status = 'idle'
-                state.value = 1 //action.payload
+                state.vehicles = action.payload
             })
-            .addCase(getVehicles.rejected, (state) => {
+            .addCase(getAsyncVehicles.rejected, (state) => {
                 state.status = 'failed'
             })
     }
 
 })
 
+
+//selector
+export const selectAllVehicles = (state: RootState) => state.vehicles;
 
 export default vehicleSlice.reducer

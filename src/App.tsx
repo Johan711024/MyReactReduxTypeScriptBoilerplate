@@ -1,13 +1,15 @@
 import React from 'react';
 import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import { Vehicle } from './features/vehicle/Vehicle';
+import { Counter } from './features/counter/Counter'
+import { Vehicle } from './features/vehicle/Vehicle'
+import { Owner } from './features/owner/Owner';
 
 import './App.css';
 
 function App() {
   return (
     <div className="App">
+      <Owner/>
       <Vehicle/>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

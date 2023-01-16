@@ -1,7 +1,10 @@
 
 
 export function fetchVehicle() {
-    return new Promise<{data:number}>((resolve) => 
-        setTimeout(()=> resolve({data:1}), 500)
+    return "fiat"
+    /*
+    return new Promise<Array<{}>>((resolve) => 
+        setTimeout(()=> resolve([{vehicletype:'toyota'}]), 500)
     )
+    */
 }
